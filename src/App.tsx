@@ -1,35 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Avatar, Box } from "@mui/material";
+import { useLazyGetCharacterByNameQuery } from "./api/api";
+import { AutocompleteSelect } from "./components/AutocompleteSelect";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [getCharacterByNameQuery, { isLoading, data }] =
+    useLazyGetCharacterByNameQuery();
+
+  const fetchOptions = (value: string) => {
+    getCharacterByNameQuery(value);
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+      <AutocompleteSelect
+        loading={isLoading}
+        options={data?.results || []}
+        fetchOptions={fetchOptions}
+        renderOption={(props, option) => {
+          return (
+            <li {...props}>
+              <Avatar src={option.image} alt={option.name} />
 
-export default App
+              <Box ml="16px">{option.name}</Box>
+            </li>
+          );
+        }}
+        getOptionLabel={(option) => option.name}
+      />
+    </>
+  );
+};
+
+export default App;
