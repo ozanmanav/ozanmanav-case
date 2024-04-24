@@ -1,6 +1,6 @@
-import { Avatar, Box } from "@mui/material";
+import { Link, Typography } from "@mui/material";
 import { useLazyGetCharacterByNameQuery } from "./api/api";
-import { AutocompleteSelect } from "./components/AutocompleteSelect";
+import { AutocompleteSelect } from "./components/autocomplete-select/autocomplete-select";
 
 const App = () => {
   const [getCharacterByNameQuery, { isLoading, data }] =
@@ -12,20 +12,22 @@ const App = () => {
 
   return (
     <>
+      <Typography>
+        This is a frontend case developed by
+        <Link
+          href={"https://www.linkedin.com/in/ozanmanav/"}
+          rel="noopener noreferrer"
+          target="_blank"
+          sx={{ ml: "4px" }}
+        >
+          Ozan Manav
+        </Link>
+      </Typography>
+
       <AutocompleteSelect
         loading={isLoading}
         options={data?.results || []}
         fetchOptions={fetchOptions}
-        renderOption={(props, option) => {
-          return (
-            <li {...props}>
-              <Avatar src={option.image} alt={option.name} />
-
-              <Box ml="16px">{option.name}</Box>
-            </li>
-          );
-        }}
-        getOptionLabel={(option) => option.name}
       />
     </>
   );
