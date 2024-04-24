@@ -11,12 +11,12 @@ import {
   TextField,
   Typography,
   debounce,
-  useTheme,
 } from "@mui/material";
 import { useCallback, useState } from "react";
 import { Character } from "../../redux/types";
 import {
   checkedIcon,
+  chipContainerSx,
   dividerSx,
   icon,
   paperSx,
@@ -37,7 +37,6 @@ export const AutocompleteSelect = ({
   options,
   loading,
 }: Props): JSX.Element => {
-  const theme = useTheme();
   const [inputValue, setInputValue] = useState("rick");
 
   const debouncedSave = debounce((newValue) => fetchOptions(newValue), 500);
@@ -116,15 +115,7 @@ export const AutocompleteSelect = ({
         sx={{ borderRadius: "8px" }}
         color="secondary"
         deleteIcon={
-          <Box
-            sx={{ backgroundColor: theme.palette.secondary.dark }}
-            width="20px"
-            height="20px"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            borderRadius="4px"
-          >
+          <Box sx={chipContainerSx}>
             <CloseIcon sx={{ color: "white", width: "16px", height: "16px" }} />
           </Box>
         }
@@ -150,7 +141,6 @@ export const AutocompleteSelect = ({
       getOptionLabel={(option) => option.name}
       isOptionEqualToValue={(option, value) => option.id === value.id}
       PaperComponent={({ children }) => <Paper sx={paperSx}>{children}</Paper>}
-      open={true}
       renderTags={renderTags}
     />
   );
